@@ -1,17 +1,13 @@
-from flask import Flask
+from flask import Flask, render_template
 import random
 
 app = Flask(__name__)
 
 @app.route('/')
 def the_home_page():
-    return 'Hello, World!'
-
-@app.route('/ada')
-def ada_page():
-    return 'The ada cohort is my favorite data science cohort!'
+    return render_template('homepage.html')
 
 @app.route('/roll-dice')
 def dice_page():
     number = random.randint(1,6)
-    return str(number)
+    return render_template('dice.html', dice_roll = number)
