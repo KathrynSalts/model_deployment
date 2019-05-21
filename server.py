@@ -1,5 +1,11 @@
 from flask import Flask, render_template
 import random
+import pandas as pd
+from model import predict
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import classification_report, accuracy_score
 
 app = Flask(__name__)
 
@@ -31,3 +37,15 @@ def handle_form_submission():
     greeting += name + '!'
 
     return render_template('greeting.html', greeting=greeting)
+
+@app.route('/model-input')
+def get_model_input():
+    return render_template('model_input.html')
+
+@app.route('/model-output', methods=['POST'])
+def handle_message():
+    name = request.form['message']
+
+    answer = 'This message is ' + predict(name)
+
+    return render_template('model_output.html', answer=answer)
